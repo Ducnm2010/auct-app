@@ -1,0 +1,73 @@
+<template>
+  <router-view />
+  <full-screen-loading v-if="isLoading" />
+  <a-modal
+    v-model:visible="showSuggestion"
+    title="Get your wallet"
+    @ok="redirectToMetaMaskExtension"
+    @cancel="setShowSuggestion(false)"
+  >
+    You need to install MetaMask first
+  </a-modal>
+</template>
+
+<script setup>
+import { computed, nextTick, onMounted } from 'vue'
+import { useStateUI } from './store/useStateUI'
+import { useContracts } from './store/useContracts'
+import { useState } from './hooks'
+
+import FullScreenLoading from './components/FullScreenLoading.vue'
+
+const { screenLoading, setScreenLoading } = useStateUI()
+const isLoading = computed(() => screenLoading.value)
+window.onload = function () {
+  setScreenLoading(true)
+  nextTick(() => {
+    setScreenLoading(false)
+  })
+}
+
+const [showSuggestion, setShowSuggestion] = useState(false)
+const metaMaskExtensionUrl = 'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn'
+const redirectToMetaMaskExtension = () => {
+  window.open(metaMaskExtensionUrl, '_blank').focus()
+}
+
+const contractStore = useContracts()
+onMounted(() => {
+  contractStore.getEthereumContract()
+})
+</script>
+
+<style lang="scss">
+/* global */
+#app {
+  display: flex;
+  flex: 1;
+  height: 100vh;
+  width: 100vw;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  box-shadow: 0 0 0 30px white inset !important;
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 10px;
+  background-color: #ccc;
+}
+
+button.ant-btn {
+  border-radius: 3px;
+
+  &.ant-btn-primary {
+    box-shadow: 1px 3px 5px rgba(0, 0, 0, .3);
+  }
+}
+</style>
