@@ -9,3 +9,5 @@ export const contractAddressCustom = `0x65d2cb8959FA62f044Be5183DD2f7F2697Cb667D
 import abiAunction from './InnoAuct.json'
 export const contractABIAuction = abiAunction.abi;
 export const contractAddressAuction = `0xf790D010F9EBC4Aaf38448F96D7e8cD3EAd59588`;
+
+export const timeout = 5 * 60 * 1000

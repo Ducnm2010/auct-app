@@ -15,20 +15,25 @@
       </a-tooltip>
     </div>
     <div class="account-info__wallet">
-      <div class="wallet-money"></div>
+      <div class="wallet">{{ truncatedBalance }} ETH</div>
     </div>
     <slot name="action" />
   </div>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { useContracts } from '../store/useContracts'
 import { storeToRefs } from 'pinia'
 
 const contractStore = useContracts()
-const { currentAccount } = storeToRefs(contractStore)
+const { currentAccount, balance } = storeToRefs(contractStore)
 const truncatedAccount = computed(() => currentAccount?.value?.slice(0, 10) + '...' || '')
+const truncatedBalance = computed(() => balance?.value.slice(0, 10) || '0')
+
+watchEffect(() => {
+  console.log(truncatedBalance)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -70,6 +75,13 @@ const truncatedAccount = computed(() => currentAccount?.value?.slice(0, 10) + '.
       display: block;
       text-align: center;
       font-size: 1.5rem;
+    }
+  }
+
+  .account-info__wallet {
+    .wallet {
+      text-align: center;
+      font-size: 2.5rem;
     }
   }
 }

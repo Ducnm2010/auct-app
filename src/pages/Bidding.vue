@@ -85,7 +85,6 @@
 <script setup>
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { message } from 'ant-design-vue'
 import { PlusOutlined, FilterOutlined, WalletOutlined } from '@ant-design/icons-vue'
 import * as mocks from '../mocks/listSessions'
 import ListSessionItem from '../components/ListSessionItem.vue'
@@ -114,11 +113,8 @@ const contractStore = useContracts()
 
 onMounted(async () => {
   try {
-    const { auctionContract, provider, signer } = await contractStore.getEthereumContract()
-    // console.log('auctionContract', auctionContract)
-    // console.log('provider', provider)
-    const a = await auctionContract.allSession()
-    console.log(a)
+    await contractStore.connectWallet()
+    await contractStore.getBalance()
   } catch (error) {
     console.log(error)
   }
