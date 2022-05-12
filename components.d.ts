@@ -9,7 +9,6 @@ declare module '@vue/runtime-core' {
     AccountInfo: typeof import('./src/components/AccountInfo.vue')['default']
     ACol: typeof import('ant-design-vue/es')['Col']
     ADatePicker: typeof import('ant-design-vue/es')['DatePicker']
-    ADivider: typeof import('ant-design-vue/es')['Divider']
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
@@ -20,14 +19,8 @@ declare module '@vue/runtime-core' {
     ALayoutHeader: typeof import('ant-design-vue/es')['LayoutHeader']
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
-    AMenuItemGroup: typeof import('ant-design-vue/es')['MenuItemGroup']
     AModal: typeof import('ant-design-vue/es')['Modal']
-    APopover: typeof import('ant-design-vue/es')['Popover']
     ARow: typeof import('ant-design-vue/es')['Row']
-    ASkeleton: typeof import('ant-design-vue/es')['Skeleton']
-    ASkeletonButton: typeof import('ant-design-vue/es')['SkeletonButton']
-    ASkeletonImage: typeof import('ant-design-vue/es')['SkeletonImage']
-    ASubMenu: typeof import('ant-design-vue/es')['SubMenu']
     ATimePicker: typeof import('ant-design-vue/es')['TimePicker']
     ATooltip: typeof import('ant-design-vue/es')['Tooltip']
     ATypography: typeof import('ant-design-vue/es')['Typography']
@@ -39,7 +32,6 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Sample: typeof import('./src/components/Sample.vue')['default']
-    SessionItem: typeof import('./src/components/SessionItem.vue')['default']
   }
 }
 

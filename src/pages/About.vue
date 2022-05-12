@@ -64,20 +64,12 @@
 </template>
 
 <script setup>
-import { message } from 'ant-design-vue'
 import { useContracts } from '../store/useContracts'
 
 const contractStore = useContracts()
 
 const connectToWallet = async () => {
-  const onSuccess = () => message.success({
-    content: 'Success connected to your wallet'
-  })
-  const onFailure = () => message.error({
-    content: `You've just denied to connect`
-  })
-  // web3Store.connectToWallet(onSuccess, onFailure)
-  contractStore.getEthereumContract()
+  await contractStore.connectWallet()
 }
 </script>
 
@@ -99,7 +91,6 @@ const connectToWallet = async () => {
     }
   }
 
-
   .illustration {
     height: 100%;
     display: flex;
@@ -114,13 +105,13 @@ const connectToWallet = async () => {
   }
 }
 
-// custom 
+// custom
 .ant-row.custom {
   height: 100%;
 }
 
 .ant-btn.custom {
-  margin-left: .5rem;
+  margin-left: 0.5rem;
   font-weight: bold;
   background-color: #ffffff;
   border-color: #ffffff;
@@ -128,7 +119,7 @@ const connectToWallet = async () => {
   position: relative;
 
   &:after {
-    content: '';
+    content: "";
     display: inline-block;
     position: absolute;
     left: 50%;

@@ -1,4 +1,4 @@
-import { ref, computed, isRef, unref, watchEffect } from 'vue'
+import { ref, computed, isRef, unref, watchEffect, onUnmounted } from 'vue'
 
 export const useCountdown = (targetDate, onTimeout = () => console.log('timeout')) => {
     const countDownDate = ref(new Date(targetDate).getTime())
@@ -14,6 +14,10 @@ export const useCountdown = (targetDate, onTimeout = () => console.log('timeout'
 
     watchEffect(() => {
         if (isTimeout()) clearInterval(countDownInterval) && onTimeout()
+    })
+
+    onUnmounted(() => {
+        clearInterval(countDownInterval)
     })
 
     return { formattedTimeLeft }

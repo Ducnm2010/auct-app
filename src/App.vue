@@ -16,7 +16,6 @@ import { computed, nextTick, onMounted } from 'vue'
 import { useStateUI } from './store/useStateUI'
 import { useContracts } from './store/useContracts'
 import { useState } from './hooks'
-
 import FullScreenLoading from './components/FullScreenLoading.vue'
 
 const { screenLoading, setScreenLoading } = useStateUI()
@@ -67,7 +66,7 @@ button.ant-btn {
   border-radius: 3px;
 
   &.ant-btn-primary {
-    box-shadow: 1px 3px 5px rgba(0, 0, 0, .3);
+    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.3);
   }
 }
 </style>
