@@ -60,10 +60,25 @@ export const useContracts = defineStore('smartContractStore', () => {
     }
 
     const getBalance = async () => {
-        const { provider } = await getEthereumContract()
-        const _balance = await provider.getBalance(currentAccount.value)
-        const formattedBalance = utilsEthers.formatUnits(_balance, 18) // balance = _balance * 10^8
-        setBalance(formattedBalance)
+        try {
+            const { provider } = await getEthereumContract()
+            const _balance = await provider.getBalance(currentAccount.value)
+            const formattedBalance = utilsEthers.formatUnits(_balance, 18) // balance = _balance * 10^8
+            setBalance(formattedBalance)
+        } catch (error) {
+            console.log(error)
+            throw new Error('Fail to get balance')
+        }
+    }
+
+    const getAllSessions = async () => {
+        try {
+            const { auctionContract } = await getEthereumContract()
+            const result = await auctionContract.allSession()
+            console.log('res', result)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     isWalletConnected()
@@ -73,6 +88,7 @@ export const useContracts = defineStore('smartContractStore', () => {
         balance,
         getEthereumContract,
         connectWallet,
-        getBalance
+        getBalance,
+        getAllSessions,
     }
 })

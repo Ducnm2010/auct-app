@@ -15,7 +15,19 @@
       </a-tooltip>
     </div>
     <div class="account-info__wallet">
-      <div class="wallet">{{ truncatedBalance }} ETH</div>
+
+      <div class="wallet">
+        <span class="symbol">
+          <img
+            src="../assets/ethereum.svg"
+            alt="ether"
+          >
+        </span>
+        <span class="amount">
+          {{ truncatedBalance }}
+        </span>
+        <span class="currency">{{ currency }}</span>
+      </div>
     </div>
     <slot name="action" />
   </div>
@@ -29,7 +41,9 @@ import { storeToRefs } from 'pinia'
 const contractStore = useContracts()
 const { currentAccount, balance } = storeToRefs(contractStore)
 const truncatedAccount = computed(() => currentAccount?.value?.slice(0, 10) + '...' || '')
-const truncatedBalance = computed(() => balance?.value.slice(0, 10) || '0')
+const truncatedBalance = computed(() => balance?.value.slice(0, 7) || '0')
+
+const currency = ref('ETH')
 
 watchEffect(() => {
   console.log(truncatedBalance)
@@ -56,7 +70,7 @@ watchEffect(() => {
     padding-bottom: 1rem;
 
     .avatar {
-      max-width: 150px;
+      max-width: 90px;
       margin: auto;
 
       img {
@@ -74,14 +88,46 @@ watchEffect(() => {
     .username {
       display: block;
       text-align: center;
-      font-size: 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
     }
   }
 
   .account-info__wallet {
+
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     .wallet {
-      text-align: center;
-      font-size: 2.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 1;
+      vertical-align: middle;
+
+      .symbol {
+
+        img {
+          width: 22px;
+          height: 22px;
+          object-fit: contain;
+        }
+      }
+
+      .amount {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-right: 4px;
+      }
+
+      .currency {
+        font-size: 1rem;
+        font-weight: bold;
+        align-self: flex-end;
+        margin-bottom: 4px;
+      }
     }
   }
 }
