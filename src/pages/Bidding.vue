@@ -2,15 +2,9 @@
   <div class="page bidding">
     <div class="container">
       <a-row :gutter="32">
-        <a-col
-          :xl="19"
-          :span="24"
-        >
+        <a-col :xl="19" :span="24">
           <div class="wrap-col list-sessions">
-            <div
-              class="space"
-              style="height: 2rem"
-            ></div>
+            <div class="space" style="height: 2rem"></div>
             <a-typography-title style="font-size: 2.5rem;">
               List of the available bidding sessions
             </a-typography-title>
@@ -19,46 +13,21 @@
               dignissimos
               rerum aspernatur asperiores mollitia neque eos voluptatum.
             </a-typography-paragraph>
-            <div
-              class="space"
-              style="height: 4rem"
-            ></div>
+            <div class="space" style="height: 4rem"></div>
             <section class="section-sesson">
               <ul class="list-sessions">
-                <list-session-item
-                  v-for="(item) in listSessions"
-                  :key="item.id"
-                  :name="item.name"
-                  :id="item.id.toString()"
-                  :pid="item.pid"
-                  :starting-price="item.startingPrice"
-                  :starting-time="item.startingTime"
-                  :img-src="item.imgSrc"
-                  @click="$router.push('/session/detail')"
-                />
+                <list-session-item v-for="(item) in listSessions" :key="item.id" :id="item.id" :starting-price="item.startingPrice" :starting-time="item.startingTime" :img-src="item.imgSrc" @click="$router.push(`/session/detail/${item.id + 1}`)" />
               </ul>
             </section>
-            <div
-              class="space"
-              style="height: 5rem"
-            ></div>
+            <div class="space" style="height: 5rem"></div>
           </div>
         </a-col>
         <a-col :xl="5">
           <div class="wrap-col account-info">
             <account-info>
               <template #action>
-                <a-row
-                  class="user-action"
-                  type="flex"
-                  justify="center"
-                  style="row-gap: 5px"
-                >
-                  <a-button
-                    type="primary"
-                    size="small"
-                    @click="$router.push('/session/create')"
-                  >
+                <a-row class="user-action" type="flex" justify="center" style="row-gap: 5px">
+                  <a-button type="primary" size="small" @click="$router.push('/session/create')">
                     <template #icon>
                       <plus-outlined class="icon-action small" />
                     </template>
@@ -71,12 +40,7 @@
         </a-col>
       </a-row>
     </div>
-    <a-modal
-      v-model:visible="showRedirectNotify"
-      title="Notify"
-      @cancel="redirectToAboutPage"
-      @ok="redirectToAboutPage"
-    >
+    <a-modal v-model:visible="showRedirectNotify" title="Notify" @cancel="redirectToAboutPage" @ok="redirectToAboutPage">
       You have not connected to your account or wallet,
       Please connect first and comeback
     </a-modal>
@@ -87,7 +51,6 @@
 import { onMounted, computed, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { PlusOutlined, FilterOutlined, WalletOutlined } from '@ant-design/icons-vue'
-import * as mocks from '../mocks/listSessions'
 import ListSessionItem from '../components/ListSessionItem.vue'
 import AccountInfo from '../components/AccountInfo.vue'
 import { useState } from '../hooks'
@@ -106,6 +69,7 @@ const contractStore = useContracts()
 const { listSession } = storeToRefs(contractStore)
 
 const listSessions = computed(() => listSession.value || [])
+watchEffect(() => console.log('listSessions', listSessions.value))
 
 onMounted(async () => {
   try {

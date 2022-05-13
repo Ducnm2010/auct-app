@@ -1,9 +1,5 @@
 <template>
-  <li
-    class="list-session-item"
-    v-wave
-    @click="$emit('click')"
-  >
+  <li class="list-session-item" v-wave @click="$emit('click')">
     <div class="session-item">
       <div class="session-item__info">
         <!-- <div class="info-name">{{ name }}</div> -->
@@ -12,10 +8,7 @@
           <money-collect-outlined class="icon-money" />
         </div>
       </div>
-      <div
-        class="session-item__photo"
-        :style="{ 'background-image': `url(${imgSrc})` }"
-      ></div>
+      <div class="session-item__photo" :style="{ 'background-image': `url(${imgSrc})` }"></div>
     </div>
   </li>
 </template>
@@ -26,7 +19,9 @@ import { MoneyCollectOutlined } from '@ant-design/icons-vue'
 import moment from 'moment'
 
 const props = defineProps({
-  id: String,
+  id: {
+    type: [Number, String]
+  },
   startingTime: String,
   startingPrice: String,
   imgSrc: String,

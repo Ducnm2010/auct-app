@@ -28,12 +28,12 @@ const routes = [
                 component: pages.SessionCreate
             },
             {
-                path: 'session/detail',
+                path: 'session/detail/:id',
                 name: 'session-detail',
                 component: pages.SessionDetail
             },
             {
-                path: 'session/result',
+                path: 'session/result/:id',
                 name: 'session-result',
                 component: pages.SessionResult
             },

@@ -1,4 +1,5 @@
 import { ref, computed, isRef, unref, watchEffect, onUnmounted } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
 
 export const useCountdown = (targetDate, onTimeout = () => console.log('timeout')) => {
     const countDownDate = ref(new Date(targetDate).getTime())
@@ -16,16 +17,13 @@ export const useCountdown = (targetDate, onTimeout = () => console.log('timeout'
         if (isTimeout()) clearInterval(countDownInterval) && onTimeout()
     })
 
-    onUnmounted(() => {
-        clearInterval(countDownInterval)
-    })
+    onBeforeRouteLeave(() => clearInterval(countDownInterval))
 
     return { formattedTimeLeft }
 }
 
 const getReturnValues = (val) => {
     const countDown = isRef(val) ? unref(val) : val
-    // calculate time left
     const validateTimeLeft = val => val <= 0 ? 0 : val
 
     const days = validateTimeLeft(Math.floor(countDown / (1000 * 60 * 60 * 24)))

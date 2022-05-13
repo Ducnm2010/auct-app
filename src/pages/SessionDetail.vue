@@ -1,9 +1,6 @@
 <template>
     <div class="page session-detail">
-        <a-typography-title
-            align="center"
-            style="padding-top: 3rem; color: #fff"
-        >
+        <a-typography-title align="center" style="padding-top: 3rem; color: #fff">
             The session will end in:
         </a-typography-title>
 
@@ -30,25 +27,16 @@
             </div>
         </div>
 
-        <a-typography-title
-            :level="4"
-            class="current-highest-price"
-        >1.000.000.000$</a-typography-title>
+        <a-typography-title :level="4" class="current-highest-price">
+            {{ startingPrice }}
+        </a-typography-title>
 
-        <a-form
-            class="bidding-form"
-            :model="formState"
-            layout="vertical"
-            align="center"
-        >
-            <a-form-item
-                label="Bid price"
-                name="bidPrice"
-            >
+        <a-form class="bidding-form" :model="formState" layout="vertical" align="center">
+            <a-form-item name="bidPrice">
                 <a-input v-model:value="formState.bidPrice" />
             </a-form-item>
             <a-form-item>
-                <a-button @click="handleSubmit">Bid</a-button>
+                <a-button @click="handleSubmit" type="primary">Bid</a-button>
             </a-form-item>
         </a-form>
 
@@ -56,19 +44,52 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 import { useCountdown } from '../hooks'
+import { storeToRefs } from 'pinia';
+import { useContracts } from '../store/useContracts';
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+
+const contractStore = useContracts()
+const { listSession } = storeToRefs(contractStore)
 
 const targetDate = 'Wed May 13 2022 18:20:00 GMT+0700 (Indochina Time)'
 
-const { formattedTimeLeft: timeLeft } = useCountdown(targetDate)
+watchEffect(() => {
+    if (!listSession.value) {
+        contractStore.getAllSessions()
+    }
+})
+
+const currentSession = computed(() => {
+    const foundIndex = listSession?.value?.findIndex(item => (item.id + 1) === Number(route.params.id))
+    if (foundIndex > -1) { return listSession.value[foundIndex] } else { return null }
+})
+
+const timeLeft = computed(() => {
+    if (currentSession.value) {
+        const { formattedTimeLeft } = useCountdown(currentSession?.value?.startingTime)
+        return formattedTimeLeft
+    }
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 }
+})
+
+const startingPrice = computed(() => currentSession?.value?.startingPrice || '0')
 
 const formState = ref({
     bidPrice: ''
 })
 
+watchEffect(() => {
+    console.log(currentSession.value)
+    if (!currentSession.value) console.log('no session availabled')
+})
+
 const handleSubmit = () => {
-    
+
 }
 </script>
 
