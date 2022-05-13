@@ -31,7 +31,8 @@
                   :name="item.name"
                   :id="item.id.toString()"
                   :pid="item.pid"
-                  :starting-price="item.startingPrice.toString()"
+                  :starting-price="item.startingPrice"
+                  :starting-time="item.startingTime"
                   :img-src="item.imgSrc"
                   @click="$router.push('/session/detail')"
                 />
@@ -83,7 +84,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, computed, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { PlusOutlined, FilterOutlined, WalletOutlined } from '@ant-design/icons-vue'
 import * as mocks from '../mocks/listSessions'
@@ -91,6 +92,7 @@ import ListSessionItem from '../components/ListSessionItem.vue'
 import AccountInfo from '../components/AccountInfo.vue'
 import { useState } from '../hooks'
 import { useContracts } from '../store/useContracts'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
 
@@ -100,16 +102,10 @@ const redirectToAboutPage = () => {
   router.push('/')
 }
 
-const width = 500;
-const height = 500;
-const listSessions = mocks.listSessions.map(item => {
-  return {
-    ...item,
-    imgSrc: `https://picsum.photos/id/${item.id}/${width}/${height}.jpg`
-  }
-})
-
 const contractStore = useContracts()
+const { listSession } = storeToRefs(contractStore)
+
+const listSessions = computed(() => listSession.value || [])
 
 onMounted(async () => {
   try {
@@ -120,8 +116,6 @@ onMounted(async () => {
     console.log(error)
   }
 })
-
-
 </script>
 
 <style lang="scss" scoped>

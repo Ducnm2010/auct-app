@@ -6,8 +6,8 @@
   >
     <div class="session-item">
       <div class="session-item__info">
-        <div class="info-name">{{ name }}</div>
-        <div class="info-time">00:00:00</div>
+        <!-- <div class="info-name">{{ name }}</div> -->
+        <div class="info-time">{{ formattedTime }}</div>
         <div class="info-price">{{ startingPrice }}
           <money-collect-outlined class="icon-money" />
         </div>
@@ -21,14 +21,21 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { MoneyCollectOutlined } from '@ant-design/icons-vue'
+import moment from 'moment'
 
 const props = defineProps({
   id: String,
-  pid: String,
-  name: String,
+  startingTime: String,
   startingPrice: String,
   imgSrc: String,
+})
+
+const formattedTime = computed(() => {
+  const _time = moment.unix(props.startingTime).format('HH:mm:ss DD-MM-YYYY')
+  console.log(_time)
+  return _time || ''
 })
 </script>
 

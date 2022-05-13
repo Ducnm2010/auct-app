@@ -22,19 +22,13 @@
                             @keypress="handleKeyPress"
                         >
                             <a-form-item
-                                label="Session name"
-                                name="name"
-                            >
-                                <a-input
-                                    v-model:value="formSession.name"
-                                    :autofocus="true"
-                                />
-                            </a-form-item>
-                            <a-form-item
                                 label="Starting price"
                                 name="startingPrice"
                             >
-                                <a-input v-model:value="formSession.startingPrice" />
+                                <a-input
+                                    v-model:value="formSession.startingPrice"
+                                    type="number"
+                                />
                             </a-form-item>
 
                             <a-row>
@@ -76,11 +70,15 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useContracts } from '../store/useContracts'
+import moment from 'moment'
+
+const contractStore = useContracts()
+
 const formSession = ref({
-    name: '',
     startingPrice: '',
-    date: '',
-    timeStart: ''
+    date: moment(),
+    timeStart: moment()
 })
 
 const handleKeyPress = (event) => {
@@ -88,7 +86,11 @@ const handleKeyPress = (event) => {
 }
 
 const handleCreate = () => {
+    const _date = moment(formSession.value.date).format('YYYY-MM-DD')
+    const _time = moment(formSession.value.timeStart).format('HH-mm')
+    const dateTime = moment(`${_date} ${_time}`).unix()
     console.log('@create', formSession.value)
+    contractStore.createSession(dateTime, formSession.value.startingPrice)
 }
 
 </script>

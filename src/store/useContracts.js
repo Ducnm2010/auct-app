@@ -1,13 +1,16 @@
 import { defineStore } from 'pinia'
 import {
     ethers,
-    utils as utilsEthers
+    utils as utilsEthers,
+    BigNumber
 } from 'ethers'
 import { contractABIAuction, contractAddressAuction } from '../utils/constant.js'
 import { message } from 'ant-design-vue'
 import { ref } from 'vue'
 
 const { ethereum } = window;
+const width = 500;
+const height = 500;
 
 export const useContracts = defineStore('smartContractStore', () => {
     const currentAccount = ref(null)
@@ -16,16 +19,14 @@ export const useContracts = defineStore('smartContractStore', () => {
     const balance = ref('')
     const setBalance = newVal => { balance.value = newVal }
 
+    const listSession = ref([])
+    const setListSession = newVal => { listSession.value = newVal }
+
     const getEthereumContract = async () => {
         console.log('ethereum', ethereum)
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const auctionContract = new ethers.Contract(contractAddressAuction, contractABIAuction, signer)
-        console.log(
-            provider,
-            signer,
-            auctionContract
-        )
         return {
             auctionContract, provider, signer
         }
@@ -74,9 +75,34 @@ export const useContracts = defineStore('smartContractStore', () => {
     const getAllSessions = async () => {
         try {
             const { auctionContract } = await getEthereumContract()
-            const result = await auctionContract.allSession()
-            console.log('res', result)
+            const _result = await auctionContract.allSession()
+            const result = _result.map((item, index) => {
+                console.log('item', item)
+                return {
+                    id: index,
+                    address: item[0],
+                    startingTime: item[1].toString(),
+                    startingPrice: item[2].toString(),
+                    isCanceled: item[3],
+                    imgSrc: `https://picsum.photos/id/${index}/${width}/${height}.jpg`
+                }
+            })
+            console.log('result', result)
+            setListSession(result)
+            console.log(listSession.value)
         } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const createSession = async (startTime, basePrice) => {
+        try {
+            const { auctionContract } = await getEthereumContract()
+            const result = await auctionContract.createSession(startTime, basePrice)
+            message.success('Session is created!')
+            console.log('result', result)
+        } catch (error) {
+            message.error('There is an error occurred, please try again')
             console.log(error)
         }
     }
@@ -86,9 +112,11 @@ export const useContracts = defineStore('smartContractStore', () => {
     return {
         currentAccount,
         balance,
+        listSession,
         getEthereumContract,
         connectWallet,
         getBalance,
         getAllSessions,
+        createSession
     }
 })
