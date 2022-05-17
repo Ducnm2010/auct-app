@@ -32,11 +32,11 @@ const routes = [
                 name: 'session-detail',
                 component: pages.SessionDetail
             },
-            {
-                path: 'session/result/:id',
-                name: 'session-result',
-                component: pages.SessionResult
-            },
+            // {
+            //     path: 'session/result/:id',
+            //     name: 'session-result',
+            //     component: pages.SessionResult
+            // },
             {
                 path: 'not-found',
                 name: 'not-found',

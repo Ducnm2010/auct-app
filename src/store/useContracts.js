@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import {
     ethers,
     utils as utilsEthers,
-    BigNumber
 } from 'ethers'
 import { contractABIAuction, contractAddressAuction } from '../utils/constant.js'
 import { message } from 'ant-design-vue'
@@ -23,8 +22,7 @@ export const useContracts = defineStore('smartContractStore', () => {
     const setListSession = newVal => { listSession.value = newVal }
 
     const getEthereumContract = async () => {
-        console.log('ethereum', ethereum)
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const auctionContract = new ethers.Contract(contractAddressAuction, contractABIAuction, signer)
         return {
@@ -44,7 +42,6 @@ export const useContracts = defineStore('smartContractStore', () => {
             console.log('List accounts', accounts)
         } catch (error) {
             console.log(error);
-            throw new Error("No ethereum object...");
         }
     }
 
@@ -56,7 +53,6 @@ export const useContracts = defineStore('smartContractStore', () => {
             message.success('Your wallet is connected')
         } catch (error) {
             console.log(error);
-            throw new Error("No ethereum object...");
         }
     }
 
@@ -68,7 +64,6 @@ export const useContracts = defineStore('smartContractStore', () => {
             setBalance(formattedBalance)
         } catch (error) {
             console.log(error)
-            throw new Error('Fail to get balance')
         }
     }
 
@@ -77,7 +72,6 @@ export const useContracts = defineStore('smartContractStore', () => {
             const { auctionContract } = await getEthereumContract()
             const _result = await auctionContract.allSession()
             const result = _result.map((item, index) => {
-                console.log('item', item)
                 return {
                     id: index,
                     address: item[0],
@@ -87,9 +81,8 @@ export const useContracts = defineStore('smartContractStore', () => {
                     imgSrc: `https://picsum.photos/id/${index}/${width}/${height}.jpg`
                 }
             })
-            console.log('result', result)
             setListSession(result)
-            console.log(listSession.value)
+            return result
         } catch (error) {
             console.log(error)
         }
@@ -98,9 +91,8 @@ export const useContracts = defineStore('smartContractStore', () => {
     const createSession = async (startTime, basePrice) => {
         try {
             const { auctionContract } = await getEthereumContract()
-            const result = await auctionContract.createSession(startTime, basePrice)
+            await auctionContract.createSession(startTime, basePrice)
             message.success('Session is created!')
-            console.log('result', result)
         } catch (error) {
             message.error('There is an error occurred, please try again')
             console.log(error)

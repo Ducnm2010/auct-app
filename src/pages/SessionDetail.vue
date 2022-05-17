@@ -1,6 +1,9 @@
 <template>
     <div class="page session-detail">
-        <a-typography-title align="center" style="padding-top: 3rem; color: #fff">
+        <a-typography-title
+            align="center"
+            style="padding-top: 3rem; color: #fff"
+        >
             The session will end in:
         </a-typography-title>
 
@@ -8,35 +11,43 @@
         <div class="timebox">
             <div class="time-left timebox-days">
                 <label>Day</label>
-                <span>{{ timeLeft.days }}</span>
+                <span>{{ formattedTimeLeft.days }}</span>
             </div>
-            <!-- <span>:</span> -->
             <div class="time-left timebox-hours">
                 <label>Hour</label>
-                <span>{{ timeLeft.hours }}</span>
+                <span>{{ formattedTimeLeft.hours }}</span>
             </div>
-            <!-- <span>:</span> -->
             <div class="time-left timebox-minutes">
                 <label>Minute</label>
-                <span>{{ timeLeft.minutes }}</span>
+                <span>{{ formattedTimeLeft.minutes }}</span>
             </div>
-            <!-- <span>:</span> -->
             <div class="time-left timebox-seconds">
                 <label>Second</label>
-                <span>{{ timeLeft.seconds }}</span>
+                <span>{{ formattedTimeLeft.seconds }}</span>
             </div>
         </div>
 
-        <a-typography-title :level="4" class="current-highest-price">
+        <a-typography-title
+            :level="4"
+            class="current-highest-price"
+        >
             {{ startingPrice }}
         </a-typography-title>
 
-        <a-form class="bidding-form" :model="formState" layout="vertical" align="center">
+        <a-form
+            class="bidding-form"
+            :model="formState"
+            layout="vertical"
+            align="center"
+        >
             <a-form-item name="bidPrice">
                 <a-input v-model:value="formState.bidPrice" />
             </a-form-item>
             <a-form-item>
-                <a-button @click="handleSubmit" type="primary">Bid</a-button>
+                <a-button
+                    @click="handleSubmit"
+                    type="primary"
+                >Bid</a-button>
             </a-form-item>
         </a-form>
 
@@ -44,53 +55,57 @@
 </template>
 
 <script setup>
-import { ref, computed, watchEffect } from 'vue'
-import { useCountdown } from '../hooks'
+import moment from 'moment'
+import { ref, computed, watch, onMounted, watchEffect } from 'vue'
 import { storeToRefs } from 'pinia';
-import { useContracts } from '../store/useContracts';
 import { useRoute } from 'vue-router'
+import { useContracts } from '../store/useContracts';
+import { formatTimestampIntoUnits } from '../utils/formatter'
+import { sessionDuration, timeStep } from '../utils/constant'
 
 const route = useRoute()
-
-
 const contractStore = useContracts()
 const { listSession } = storeToRefs(contractStore)
 
-const targetDate = 'Wed May 13 2022 18:20:00 GMT+0700 (Indochina Time)'
-
-watchEffect(() => {
-    if (!listSession.value) {
-        contractStore.getAllSessions()
-    }
-})
-
 const currentSession = computed(() => {
-    const foundIndex = listSession?.value?.findIndex(item => (item.id + 1) === Number(route.params.id))
-    if (foundIndex > -1) { return listSession.value[foundIndex] } else { return null }
+    const isCurrentSession = item => (item.id + 1) === Number(route.params.id)
+    const foundIndex = listSession?.value?.findIndex(isCurrentSession)
+    if (foundIndex > -1) return listSession.value[foundIndex]
+    else return null
 })
+const startingPrice = computed(() => currentSession.value?.startingPrice || 0)
+const startingTime = computed(() => Number(currentSession.value?.startingTime))
+const endTime = computed(() => Number(startingTime.value) + sessionDuration)
 
-const timeLeft = computed(() => {
-    if (currentSession.value) {
-        const { formattedTimeLeft } = useCountdown(currentSession?.value?.startingTime)
-        return formattedTimeLeft
+const timeLeft = ref(0) // timestamp
+const formattedTimeLeft = computed(() =>
+    formatTimestampIntoUnits(timeLeft.value * 1000) /** epoch by milliseconds */
+    || { days: 0, hours: 0, minutes: 0, seconds: 0 }
+)
+const countdownInterval = ref(null)
+const countdown = () => { --timeLeft.value }
+
+watch(endTime, (newVal) => {
+    if (!newVal) return
+    timeLeft.value = endTime.value - moment(new Date()).unix()
+    countdownInterval.value = setInterval(countdown, timeStep)
+}, { immediate: true })
+watchEffect(() => {
+    if (timeLeft.value <= 0) {
+        clearInterval(countdownInterval.value)
     }
-    return { days: 0, hours: 0, minutes: 0, seconds: 0 }
 })
-
-const startingPrice = computed(() => currentSession?.value?.startingPrice || '0')
 
 const formState = ref({
     bidPrice: ''
 })
-
-watchEffect(() => {
-    console.log(currentSession.value)
-    if (!currentSession.value) console.log('no session availabled')
-})
-
 const handleSubmit = () => {
 
 }
+
+onMounted(() => {
+    contractStore.getAllSessions()
+})
 </script>
 
 <style scoped lang="scss">

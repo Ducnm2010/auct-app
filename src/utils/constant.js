@@ -10,4 +10,5 @@ import abiAunction from './InnoAuct.json'
 export const contractABIAuction = abiAunction.abi;
 export const contractAddressAuction = `0xf790D010F9EBC4Aaf38448F96D7e8cD3EAd59588`;
 
-export const timeout = 5 * 60 * 1000
+export const sessionDuration = 30 * 60 // s
+export const timeStep = 1000 // ms

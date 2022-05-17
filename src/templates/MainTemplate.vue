@@ -58,11 +58,16 @@
       title="Guide to our service"
       @ok="showGuide = false"
     >
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque voluptas repellendus sapiente quisquam culpa quae
-      sint fugit eligendi porro at!
+      Our service is based on blockchain platform in order to save all our customer's transaction.
+      That ensure you to avoid all matter of scams
 
       <ol style="margin-top: 1.5rem">
-        <li>Lorem, ipsum dolor.</li>
+        <li>
+          <a class="hyperlink" href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en">
+            Install MetaMask extension.
+          </a>
+          This helps us to help you connect to your wallet.
+        </li>
         <li>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat, excepturi?</li>
         <li>Lorem, ipsum dolor.</li>
       </ol>
@@ -98,6 +103,10 @@ const handleSelect = (selected) => {
   display: flex;
   flex: 1;
   background-color: #ffffff;
+}
+
+.hyperlink {
+  text-decoration: underline;
 }
 
 .layout-header {

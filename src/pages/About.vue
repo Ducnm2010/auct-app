@@ -1,65 +1,66 @@
 <template>
   <div class="page home">
-    <a-row>
-      <a-col
-        :span="20"
-        :offset="2"
-      >
-        <a-row
-          :gutter="10"
-          class="custom"
-        >
-          <a-col :span="12">
-            <div class="title">
-              <a-typography-title>About us</a-typography-title>
-            </div>
-            <div class="content">
-              <a-typography-paragraph>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti, non.
-              </a-typography-paragraph>
-              <a-typography>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumenda eius ab nostrum libero pariatur at
-                necessitatibus tempore veniam! Nemo, voluptatem tenetur. Aut molestiae blanditiis dolores maxime
-                repellat
-                temporibus quibusdam fuga?
-              </a-typography>
-              <div class="space"></div>
-              <a-row
-                type="flex"
-                justify="end"
-              >
-                <a-button
-                  v-wave
-                  type="link"
-                  size="large"
-                  class="custom"
-                  @click="connectToWallet"
-                >
-                  Connect to your wallet
-                </a-button>
-                <a-button
-                  v-wave
-                  type="primary"
-                  size="large"
-                  @click="$router.push('/bidding')"
-                >
-                  Go bidding
-                </a-button>
-              </a-row>
-            </div>
-          </a-col>
-          <a-col :span="12">
-            <div class="illustration">
-              <img
-                class="image"
-                src="../assets/cover-1.jpg"
-                alt="cover"
-              >
-            </div>
+    <section class="introducing">
+      <div class="container">
+        <a-row>
+          <a-col
+            :span="20"
+            :offset="2"
+          >
+            <a-row
+              :gutter="10"
+              class="custom"
+            >
+              <a-col :span="24">
+                <div class="title">
+                  <a-typography-title>About us</a-typography-title>
+                </div>
+                <div class="content">
+                  <a-typography-paragraph>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti, non.
+                  </a-typography-paragraph>
+                  <a-typography>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumenda eius ab nostrum libero pariatur
+                    at
+                    necessitatibus tempore veniam! Nemo, voluptatem tenetur. Aut molestiae blanditiis dolores maxime
+                    repellat
+                    temporibus quibusdam fuga?
+                  </a-typography>
+                  <div class="space"></div>
+                  <a-row
+                    type="flex"
+                    justify="start"
+                  >
+                    <a-button
+                      v-wave
+                      class="drop-shadow"
+                      size="large"
+                      style="margin-right: 10px;"
+                      @click="connectToWallet"
+                    >
+                      Connect to your wallet
+                    </a-button>
+                    <a-button
+                      v-wave
+                      class="drop-shadow"
+                      type="primary"
+                      size="large"
+                      @click="$router.push('/bidding')"
+                    >
+                      Go bidding
+                    </a-button>
+                  </a-row>
+                </div>
+              </a-col>
+            </a-row>
           </a-col>
         </a-row>
-      </a-col>
-    </a-row>
+      </div>
+    </section>
+    <section
+      class="service"
+      style="height: 1000px"
+    ></section>
   </div>
 </template>
 
@@ -75,9 +76,25 @@ const connectToWallet = async () => {
 
 <style scoped lang="scss">
 .page.home {
-  height: 100%;
-  max-width: 1200px;
-  margin: auto;
+
+  section.introducing {
+    background-image: url(/src/assets/urban.webp), linear-gradient(-20deg, rgb(0 0 0), rgb(255 255 255));
+    background-blend-mode: overlay;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 500px;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: -100px auto 0;
+  }
+
 
   .space {
     height: 2rem;
@@ -88,6 +105,7 @@ const connectToWallet = async () => {
 
     h1 {
       font-size: 3.2rem;
+      color: #fff;
     }
   }
 
@@ -102,39 +120,6 @@ const connectToWallet = async () => {
       max-height: 70vh;
       object-fit: cover;
     }
-  }
-}
-
-// custom
-.ant-row.custom {
-  height: 100%;
-}
-
-.ant-btn.custom {
-  margin-left: 0.5rem;
-  font-weight: bold;
-  background-color: #ffffff;
-  border-color: #ffffff;
-  color: var(--antd-wave-shadow-color);
-  position: relative;
-
-  &:after {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    left: 50%;
-    top: 100%;
-    width: 70%;
-    height: 2px;
-    background-color: var(--antd-wave-shadow-color);
-    transform: translate(-50%, -5px) scaleX(0);
-    transition: all 300ms ease;
-    transform-origin: left center;
-  }
-
-  &:hover:after {
-    transform: translate(-50%, -5px) scaleX(1);
-    transform-origin: left;
   }
 }
 </style>

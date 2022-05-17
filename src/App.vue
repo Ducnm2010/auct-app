@@ -41,11 +41,24 @@ onMounted(() => {
 
 <style lang="scss">
 /* global */
+html,
+body {
+  font-family: 'Raleway', sans-serif !important;
+
+  * {
+    font-variant-numeric: lining-nums;
+    font-feature-settings: "lnum";
+    -moz-font-feature-settings: "lnum";
+    -moz-font-feature-settings: "lnum=1";
+    -ms-font-feature-settings: "lnum";
+    -o-font-feature-settings: "lnum";
+    -webkit-font-feature-settings: "lnum";
+  }
+}
+
 #app {
   display: flex;
   flex: 1;
-  height: 100vh;
-  width: 100vw;
 }
 
 input:-webkit-autofill,
@@ -65,8 +78,10 @@ input:-webkit-autofill:active {
 button.ant-btn {
   border-radius: 3px;
 
-  &.ant-btn-primary {
+  &.drop-shadow {
     box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.3);
   }
+
+  &.ant-btn-primary {}
 }
 </style>
