@@ -12,3 +12,5 @@ export const contractAddressAuction = `0xf790D010F9EBC4Aaf38448F96D7e8cD3EAd5958
 
 export const sessionDuration = 30 * 60 // s
 export const timeStep = 1000 // ms
+export const timeFormat = 'HH:mm'
+export const dateFormat = 'DD-MM-YYYY'

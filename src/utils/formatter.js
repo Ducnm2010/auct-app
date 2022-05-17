@@ -10,8 +10,6 @@ export const formatTimestampIntoUnits = (val) => {
     const minutes = validateTimeLeft(Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60)))
     const seconds = validateTimeLeft(Math.floor((countDown % (1000 * 60)) / 1000))
 
-
-    console.log({ days, hours, minutes, seconds })
     return { days, hours, minutes, seconds }
 };
 

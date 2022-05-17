@@ -59,6 +59,18 @@ body {
 #app {
   display: flex;
   flex: 1;
+  .page {
+    min-height: 100vh;
+  }
+}
+
+button.ant-btn:not(.ant-btn-primary) {
+  &:hover {
+    color: var(--antd-wave-shadow-color);
+    span {
+      text-shadow: 0 0 0 black;
+    }
+  }
 }
 
 input:-webkit-autofill,
@@ -81,7 +93,5 @@ button.ant-btn {
   &.drop-shadow {
     box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.3);
   }
-
-  &.ant-btn-primary {}
 }
 </style>

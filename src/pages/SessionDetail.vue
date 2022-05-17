@@ -32,6 +32,7 @@
             class="current-highest-price"
         >
             {{ startingPrice }}
+            <span class="currency" style="font-size: 2rem">ETH</span>
         </a-typography-title>
 
         <a-form
@@ -111,8 +112,6 @@ onMounted(() => {
 <style scoped lang="scss">
 .page.session-detail {
     height: 100%;
-    color: #ffffff;
-    background-color: var(--antd-wave-shadow-color);
 
     .timebox {
         display: flex;
@@ -134,7 +133,7 @@ onMounted(() => {
             color: #001529;
             background-color: #ffffff;
             border-radius: 10px;
-            box-shadow: 1px 3px 10px rgb(0 0 0 / 30%);
+            // box-shadow: 1px 3px 10px rgb(0 0 0 / 30%);
 
             label {
                 font-size: 1rem;
@@ -151,7 +150,7 @@ onMounted(() => {
 
 
     .current-highest-price {
-        color: #ffffff;
+        // color: #ffffff;
         text-align: center;
         font-size: 4rem;
         text-shadow: 1px 1px rgba(255 255 255 / 15%)

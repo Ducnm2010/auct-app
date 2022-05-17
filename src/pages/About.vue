@@ -57,10 +57,6 @@
         </a-row>
       </div>
     </section>
-    <section
-      class="service"
-      style="height: 1000px"
-    ></section>
   </div>
 </template>
 
@@ -78,13 +74,13 @@ const connectToWallet = async () => {
 .page.home {
 
   section.introducing {
-    background-image: url(/src/assets/urban.webp), linear-gradient(-20deg, rgb(0 0 0), rgb(255 255 255));
+    background-image: url(/src/assets/urban.webp), linear-gradient(320deg, rgba(0, 0, 0, .5) 10%, rgba(255, 255, 255, 1) 50%);
     background-blend-mode: overlay;
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
     min-height: 500px;
-    height: 50vh;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -105,7 +101,6 @@ const connectToWallet = async () => {
 
     h1 {
       font-size: 3.2rem;
-      color: #fff;
     }
   }
 

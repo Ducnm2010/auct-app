@@ -69,7 +69,6 @@ const contractStore = useContracts()
 const { listSession } = storeToRefs(contractStore)
 
 const listSessions = computed(() => listSession.value || [])
-watchEffect(() => console.log('listSessions', listSessions.value))
 
 onMounted(async () => {
   try {

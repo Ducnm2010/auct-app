@@ -1,21 +1,48 @@
 <template>
-  <li class="list-session-item" v-wave @click="$emit('click')">
+  <li
+    class="list-session-item"
+    v-wave
+    @click="$emit('click')"
+  >
     <div class="session-item">
+      <div
+        v-if="hasEnded"
+        class="session-item__label"
+      >Closed</div>
       <div class="session-item__info">
-        <!-- <div class="info-name">{{ name }}</div> -->
-        <div class="info-time">{{ formattedTime }}</div>
-        <div class="info-price">{{ startingPrice }}
+        <div class="info-time ended-time">
+          <span class="info-time__icon">
+            <field-time-outlined />
+          </span>
+          <span class="info-time__text">
+            {{ formattedTime.endedTime }}
+          </span>
+        </div>
+        <div class="info-time ended-date">
+          <span class="info-time__icon">
+            <calendar-outlined />
+          </span>
+          <span class="info-time__text">
+            {{ formattedTime.endedDate }}
+          </span>
+        </div>
+        <div class="info-price">
+          <span class="info-price__text">{{ startingPrice }}</span>
           <money-collect-outlined class="icon-money" />
         </div>
       </div>
-      <div class="session-item__photo" :style="{ 'background-image': `url(${imgSrc})` }"></div>
+      <div
+        class="session-item__photo"
+        :style="{ 'background-image': `url(${imgSrc})` }"
+      ></div>
     </div>
   </li>
 </template>
 
 <script setup>
 import { computed } from 'vue'
-import { MoneyCollectOutlined } from '@ant-design/icons-vue'
+import { MoneyCollectOutlined, FieldTimeOutlined, CalendarOutlined } from '@ant-design/icons-vue'
+import { sessionDuration, timeFormat, dateFormat } from '../utils/constant'
 import moment from 'moment'
 
 const props = defineProps({
@@ -28,9 +55,27 @@ const props = defineProps({
 })
 
 const formattedTime = computed(() => {
-  const _time = moment.unix(props.startingTime).format('HH:mm:ss DD-MM-YYYY')
-  console.log(_time)
-  return _time || ''
+  const startedTime = moment.unix(props.startingTime).format(timeFormat)
+  const startedDate = moment.unix(props.startingTime).format(dateFormat)
+  const endedMoment = Number(props.startingTime) + sessionDuration
+  const endedTime = moment.unix(endedMoment).format(timeFormat)
+  const endedDate = moment.unix(endedMoment).format(dateFormat)
+  return {
+    endedMoment,
+    startedTime,
+    startedDate,
+    endedTime,
+    endedDate
+  }
+})
+
+const hasEnded = computed(() => {
+  // console.log('%c formattedTime.value.endedMoment', 'background: red; color: white', moment.unix(formattedTime.value.endedMoment).format('DD-MM-YYYY HH:mm'))
+  // console.log('%c new Date().getTime()', 'background: green; color: white', moment().format('DD-MM-YYYY HH:mm'))
+
+  console.log('%c formattedTime.value.endedMoment', 'background: red; color: white', moment.unix(formattedTime.value.endedMoment) / 1000)
+  console.log('%c new Date().getTime()', 'background: green; color: white', moment().unix())
+  return moment.unix(formattedTime.value.endedMoment) / 1000 <= moment().unix()
 })
 </script>
 
@@ -38,6 +83,7 @@ const formattedTime = computed(() => {
 .list-session-item {
   flex: 47%;
   flex-grow: 0;
+  position: relative;
 
   .session-item {
     display: flex;
@@ -47,6 +93,45 @@ const formattedTime = computed(() => {
     cursor: pointer;
     box-shadow: 3px 5px 7px rgb(0 0 0 / 30%);
     transition: all 500ms ease-in-out;
+
+    .session-item__label {
+      position: absolute;
+      right: -12px;
+      top: 20px;
+      color: #fff;
+      background: red;
+      padding-left: 20px;
+      padding-right: 20px;
+      transform: rotate(45deg);
+      box-shadow: 3px 3px 10px rgb(0 0 0 / 30%);
+
+      &::after,
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        border-color: red;
+        position: absolute
+      }
+
+      &::after {
+        right: calc(-100% + 1px);
+        top: 0;
+        border-top: 20px solid transparent;
+        border-bottom: 0px solid transparent;
+        border-left: 15px solid red;
+      }
+
+      &::before {
+        right: calc(100% - 1px);
+        bottom: 0;
+        top: 0;
+        border-top: 20px solid transparent;
+        border-bottom: 0px solid transparent;
+        border-right: 15px solid red;
+      }
+    }
 
     .session-item__info {
       flex: 40%;
@@ -73,6 +158,12 @@ const formattedTime = computed(() => {
         .icon-money {
           font-size: 1.5rem;
           margin-left: 5px;
+        }
+      }
+
+      .info-time {
+        .info-time__icon {
+          margin-right: 6px;
         }
       }
     }

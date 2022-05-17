@@ -11,6 +11,7 @@
     "@ant-design/icons-vue": "^6.1.0",
     "ant-design-vue": "^3.2.0",
     "browserify-zlib": "^0.2.0",
+    "dayjs": "^1.11.2",
     "events": "^3.3.0",
     "moment": "^2.29.3",
     "pinia": "^2.0.13",
